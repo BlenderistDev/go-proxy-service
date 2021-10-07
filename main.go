@@ -14,8 +14,12 @@ type server struct{
 
 }
 
+const (
+	address = ":9999"
+)
+
 func(s *server) Get(ctx context.Context, in *pb.Url) (*pb.Answer, error) {
-	fmt.Println(in)
+	fmt.Printf("Recive request: %s\n", in.Value)
 
 	resp, err := http.Get(in.Value)
 	if err != nil {
@@ -31,15 +35,17 @@ func(s *server) Get(ctx context.Context, in *pb.Url) (*pb.Answer, error) {
 }
 
 func main()  {
-	lis, err := net.Listen("tcp", ":9999")
-
+	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	s := grpc.NewServer()
+
 	pb.RegisterProxyServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
+
+	err = s.Serve(lis)
+	if err != nil {
 		fmt.Println(err)
 	}
 }
