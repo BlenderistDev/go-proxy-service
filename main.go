@@ -1,14 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"google.golang.org/grpc"
 	"io/ioutil"
 	"net"
 	"net/http"
-	pb "proxy/service/proxy/proxy/proxy"
-
-	"context"
+	pb "proxy/service/proxy"
 )
 
 type server struct{
